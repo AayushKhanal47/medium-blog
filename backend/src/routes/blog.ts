@@ -4,6 +4,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
 import { bodyLimit } from "hono/body-limit";
 import { ErrorBoundary } from "hono/jsx";
+import { createBlogInput, updateBlogInput } from "@aayushkhanal47/medium-blog";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -39,9 +40,18 @@ const getPrisma = (c: any) =>
   new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
 
 blogRouter.post("/", async (c) => {
+      const body = await c.req.json()
+         const {success} = createBlogInput.safeParse(body)
+         if(!success){
+            c.status(411)
+                return c.json({
+                    message: "Input not correct"
+                })
+            
+         }
   const authorId = c.get("userId");
   const prisma = getPrisma(c);
-  const body = await c.req.json();
+  
 
   try {
     const blog = await prisma.blog.create({
@@ -61,8 +71,17 @@ blogRouter.post("/", async (c) => {
 
 
 blogRouter.put("/", async (c) => {
+      const body = await c.req.json()
+         const {success} = updateBlogInput.safeParse(body)
+         if(!success){
+            c.status(411)
+                return c.json({
+                    message: "Input not correct"
+                })
+            
+         }
   const prisma = getPrisma(c);
-  const body = await c.req.json();
+  
 
   try {
     const blog = await prisma.blog.update({
