@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { PrismaClient } from '@prisma/client/edge';
-import { withAccelerate } from '@prisma/extension-accelerate';
-import { sign } from 'hono/jwt';
+import { PrismaClient } from "@prisma/client/edge";
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { sign } from "hono/jwt";
 import { SignupInput, SigninInput } from "@aayushkhanal47/medium-blog";
 
 export const userRouter = new Hono<{
@@ -11,9 +11,8 @@ export const userRouter = new Hono<{
   };
 }>();
 
-userRouter.post('/signup', async (c) => {
+userRouter.post("/signup", async (c) => {
   const body = await c.req.json();
-
 
   const parsed = SignupInput.safeParse(body);
   if (!parsed.success) {
@@ -43,7 +42,7 @@ userRouter.post('/signup', async (c) => {
   }
 });
 
-userRouter.post('/signin', async (c) => {
+userRouter.post("/signin", async (c) => {
   const body = await c.req.json();
 
   const parsed = SigninInput.safeParse(body);

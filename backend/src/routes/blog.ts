@@ -16,10 +16,11 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-
 blogRouter.use("/*", async (c, next) => {
   const authHeader = c.req.header("authorization") || "";
-  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : authHeader;
 
   try {
     const user = await verify(token, c.env.JWT_SECRET);
@@ -37,21 +38,21 @@ blogRouter.use("/*", async (c, next) => {
 });
 
 const getPrisma = (c: any) =>
-  new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(withAccelerate());
+  new PrismaClient({ datasourceUrl: c.env.DATABASE_URL }).$extends(
+    withAccelerate()
+  );
 
 blogRouter.post("/", async (c) => {
-      const body = await c.req.json()
-         const {success} = createBlogInput.safeParse(body)
-         if(!success){
-            c.status(411)
-                return c.json({
-                    message: "Input not correct"
-                })
-            
-         }
+  const body = await c.req.json();
+  const { success } = createBlogInput.safeParse(body);
+  if (!success) {
+    c.status(411);
+    return c.json({
+      message: "Input not correct",
+    });
+  }
   const authorId = c.get("userId");
   const prisma = getPrisma(c);
-  
 
   try {
     const blog = await prisma.blog.create({
@@ -69,19 +70,16 @@ blogRouter.post("/", async (c) => {
   }
 });
 
-
 blogRouter.put("/", async (c) => {
-      const body = await c.req.json()
-         const {success} = updateBlogInput.safeParse(body)
-         if(!success){
-            c.status(411)
-                return c.json({
-                    message: "Input not correct"
-                })
-            
-         }
+  const body = await c.req.json();
+  const { success } = updateBlogInput.safeParse(body);
+  if (!success) {
+    c.status(411);
+    return c.json({
+      message: "Input not correct",
+    });
+  }
   const prisma = getPrisma(c);
-  
 
   try {
     const blog = await prisma.blog.update({
@@ -112,9 +110,8 @@ blogRouter.get("/bulk", async (c) => {
 });
 
 blogRouter.get("/:id", async (c) => {
-    const id = c.req.param("id")
+  const id = c.req.param("id");
   const prisma = getPrisma(c);
-
 
   try {
     const blog = await prisma.blog.findFirst({
@@ -132,5 +129,3 @@ blogRouter.get("/:id", async (c) => {
     return c.json({ message: "Error while fetching blog" });
   }
 });
-
-
