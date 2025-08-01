@@ -56,7 +56,7 @@ export function Avatar({
 }) {
   return (
     <div
-      className={`flex items-center justify-center rounded-full bg-blue-400 text-white font-medium ${
+      className={`flex items-center justify-center rounded-full bg-blue-4 00 text-white font-medium ${
         size === "small" ? "w-6 h-6 text-xs" : "w-10 h-10 text-lg"
       }`}>
       {name[0]?.toUpperCase()}

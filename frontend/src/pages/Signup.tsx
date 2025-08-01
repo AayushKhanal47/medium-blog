@@ -6,7 +6,7 @@ const Signup = () => {
     <div>
       <div className="grid grid-cols-2">
         <div>
-           <Auth type="signup" />
+          <Auth type="signup" />
         </div>
         <div className="invisible lg:visible">
           <Quote />

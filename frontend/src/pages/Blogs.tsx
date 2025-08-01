@@ -1,7 +1,14 @@
 import Appbar from "../components/Appbar";
+import { useBlogs } from "../hooks";
 import BlogCard from "./../components/BlogCard";
 
 const Blogs = () => {
+  const { blog, loading } = useBlogs();
+  if (loading) {
+    return;
+    <div>loading....</div>;
+  }
+
   return (
     <div>
       <Appbar />
